@@ -1,0 +1,71 @@
+plugins {
+  id "java-gradle-plugin"
+  // id "com.gradle.plugin-publish" version "1.2.0"
+}
+
+description = "RESTful API document generation."
+
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+
+  testAnnotationProcessor {
+    extendsFrom annotationProcessor
+  }
+}
+
+dependencies {
+  api(platform("cn.taketoday:infra-dependencies:$infraVersion"))
+
+  implementation "cn.taketoday:today-core"
+  implementation "cn.taketoday:today-web"
+
+  implementation 'com.thoughtworks.qdox:qdox:2.0.3'
+
+  implementation 'com.google.code.gson:gson:2.10.1'
+
+  implementation 'org.slf4j:slf4j-api:2.0.7'
+  implementation "io.swagger.core.v3:swagger-models:2.2.19"
+  implementation "com.fasterxml.jackson.core:jackson-databind"
+
+  testImplementation("org.junit.jupiter:junit-jupiter-api")
+  testImplementation("org.junit.jupiter:junit-jupiter-params")
+  testImplementation("org.junit.platform:junit-platform-suite-api")
+  testImplementation("org.mockito:mockito-core")
+  testImplementation("org.mockito:mockito-junit-jupiter")
+  testImplementation("org.assertj:assertj-core")
+  testImplementation 'org.projectlombok:lombok'
+//  testAnnotationProcessor("org.projectlombok:lombok")
+
+  // Pull in the latest JUnit 5 Launcher API to ensure proper support in IDEs.
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+  testRuntimeOnly("org.junit.platform:junit-platform-suite-engine")
+  // JSR-305 only used for non-required meta-annotations
+  compileOnly("com.google.code.findbugs:jsr305")
+  testCompileOnly("com.google.code.findbugs:jsr305")
+}
+
+tasks.named('test') {
+  useJUnitPlatform()
+}
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+gradlePlugin {
+  website = "https://github.com/today-tech/today-web-docs"
+  vcsUrl = "https://github.com/today-tech/today-web-docs"
+  plugins {
+    webDocsPlugin {
+      id = 'cn.taketoday.web-docs'
+      tags.set(['web', 'application', 'docs'])
+      displayName = "TODAY Infrastructure Web Docs Gradle Plugin"
+      description = "TODAY Infrastructure Web Docs Gradle Plugin"
+      implementationClass = 'cn.taketoday.web.doc.gradle.WebDocPlugin'
+    }
+  }
+}
