@@ -17,19 +17,19 @@
 
 package cn.taketoday.web.doc.openapi;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.library.SortedClassLibraryBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
 
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
 
-import cn.taketoday.core.io.ClassPathResource;
 import cn.taketoday.lang.Constant;
+import cn.taketoday.web.doc.DocConfig;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.SpecVersion;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="https://github.com/TAKETODAY">Harry Yang</a>
@@ -42,17 +42,17 @@ class OpenAPIModelFactoryTests {
     JavaProjectBuilder javaDocBuilder = new JavaProjectBuilder(classLibraryBuilder);
     javaDocBuilder.setEncoding(Constant.DEFAULT_ENCODING);
     javaDocBuilder.addSourceTree(new File("src/test/java/cn/taketoday/demo"));
-
     return javaDocBuilder;
   }
 
-
   @Test
-  void buildOpenApi() throws IOException {
-    ClassPathResource resource = new ClassPathResource("web-doc/default.json");
+  void createOpenAPI() {
     JavaProjectBuilder projectBuilder = createJavaProjectBuilder();
-    Collection<JavaClass> classes = projectBuilder.getClasses();
-    ObjectMapper objectMapper = new ObjectMapper();
-//    OpenApiBuilder.buildOpenApi(apiConfig, createJavaProjectBuilder());
+    OpenAPIModelFactory factory = new OpenAPIModelFactory();
+    OpenAPI openAPI = factory.createOpenAPI(new DocConfig(), projectBuilder);
+    System.out.println(openAPI);
+
+    assertThat(openAPI.getSpecVersion()).isSameAs(SpecVersion.V30);
   }
+
 }
