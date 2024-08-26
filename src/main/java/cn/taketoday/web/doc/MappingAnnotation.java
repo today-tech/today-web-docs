@@ -20,6 +20,7 @@ package cn.taketoday.web.doc;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
+import cn.taketoday.http.HttpMethod;
 import cn.taketoday.lang.Nullable;
 
 /**
@@ -45,12 +46,12 @@ public class MappingAnnotation {
   public final String methodAttr;
 
   @Nullable
-  public final String method;
+  public final HttpMethod method;
 
   public final String paramsAttr;
 
   public MappingAnnotation(String annotationName, List<String> pathAttr,
-          String producesAttr, String consumesAttr, String methodAttr, @Nullable String method, String paramsAttr) {
+          String producesAttr, String consumesAttr, String methodAttr, @Nullable HttpMethod method, String paramsAttr) {
     this.annotationName = annotationName;
     this.pathAttr = pathAttr;
     this.producesAttr = producesAttr;
@@ -80,7 +81,7 @@ public class MappingAnnotation {
     return new MappingAnnotation(annotationName, pathAttr, producesAttr, consumesProp, methodAttr, method, paramsAttr);
   }
 
-  public MappingAnnotation withMethod(@Nullable String method) {
+  public MappingAnnotation withMethod(@Nullable HttpMethod method) {
     return new MappingAnnotation(annotationName, pathAttr, producesAttr, consumesAttr, methodAttr, method, paramsAttr);
   }
 

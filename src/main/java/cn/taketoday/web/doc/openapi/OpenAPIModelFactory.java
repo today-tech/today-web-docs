@@ -35,6 +35,7 @@ import cn.taketoday.http.HttpMethod;
 import cn.taketoday.lang.Assert;
 import cn.taketoday.lang.Nullable;
 import cn.taketoday.util.ClassUtils;
+import cn.taketoday.util.StringUtils;
 import cn.taketoday.web.annotation.DELETE;
 import cn.taketoday.web.annotation.DeleteMapping;
 import cn.taketoday.web.annotation.GET;
@@ -97,16 +98,12 @@ public class OpenAPIModelFactory {
     return null;
   }
 
-  @Nullable
   private Pair<String, PathItem> processMethod(List<MappingAnnotation> mappings, JavaClass declaringClass, JavaMethod method) {
-    List<JavaAnnotation> annotations = method.getAnnotations();
     PathItem pathItem = new PathItem();
 
     for (MappingAnnotation mapping : mappings) {
       JavaAnnotation annotation = AnnotationUtils.getAnnotation(method, mapping.annotationName);
       if (annotation != null) {
-        HttpMethod httpMethod = HttpMethod.resolve(getHttpMethod(mapping, annotation));
-        Assert.state(httpMethod != null, "HttpMethod not supported");
         Operation operation = new Operation();
         for (JavaParameter param : method.getParameters()) {
           Parameter parameter = getParameter(method, param);
@@ -114,17 +111,33 @@ public class OpenAPIModelFactory {
             operation.addParametersItem(parameter);
           }
         }
+
+        HttpMethod httpMethod = getHttpMethod(mapping, annotation);
         switch (httpMethod) {
           case GET -> pathItem.setGet(operation);
-          case POST -> { }
-          case PUT -> { }
-          case DELETE -> { }
-          case PATCH -> { }
-          case TRACE -> { }
-          case HEAD -> { }
-          case OPTIONS -> { }
+          case PUT -> pathItem.setPut(operation);
+          case POST -> pathItem.setPost(operation);
+          case PATCH -> pathItem.setPatch(operation);
+          case DELETE -> pathItem.setDelete(operation);
+          case HEAD -> pathItem.setHead(operation);
+          case TRACE -> pathItem.setTrace(operation);
+          case OPTIONS -> pathItem.setOptions(operation);
         }
 
+        List<String> paths = new ArrayList<>();
+        for (String pathAttr : mapping.pathAttr) {
+          AnnotationValue annotationValue = annotation.getProperty(pathAttr);
+          if (annotationValue != null) {
+            String path = AnnotationUtils.getValue(annotationValue);
+            if (StringUtils.hasText(path)) {
+              paths.add(path);
+            }
+          }
+        }
+
+        if (!paths.isEmpty()) {
+          return Pair.of(paths.get(0), pathItem);
+        }
       }
     }
 
@@ -161,11 +174,12 @@ public class OpenAPIModelFactory {
     return null;
   }
 
-  private String getHttpMethod(MappingAnnotation mapping, JavaAnnotation annotation) {
-    String httpMethod;
+  private HttpMethod getHttpMethod(MappingAnnotation mapping, JavaAnnotation annotation) {
+    HttpMethod httpMethod;
     if (mapping.method == null) {
       AnnotationValue annotationValue = annotation.getProperty(mapping.methodAttr);
-      httpMethod = AnnotationUtils.getValue(annotationValue);
+      httpMethod = HttpMethod.resolve(AnnotationUtils.getValue(annotationValue));
+      Assert.state(httpMethod != null, "HttpMethod not supported");
     }
     else {
       httpMethod = mapping.method;
@@ -179,20 +193,20 @@ public class OpenAPIModelFactory {
             "produces", "consumes", "method", null, "params");
 
     mappings.add(prototype);
-    mappings.add(prototype.withAnnotation(GET.class));
-    mappings.add(prototype.withAnnotation(GetMapping.class));
+    mappings.add(prototype.withAnnotation(GET.class).withMethod(HttpMethod.GET));
+    mappings.add(prototype.withAnnotation(GetMapping.class).withMethod(HttpMethod.GET));
 
-    mappings.add(prototype.withAnnotation(POST.class));
-    mappings.add(prototype.withAnnotation(PostMapping.class));
+    mappings.add(prototype.withAnnotation(POST.class).withMethod(HttpMethod.POST));
+    mappings.add(prototype.withAnnotation(PostMapping.class).withMethod(HttpMethod.POST));
 
-    mappings.add(prototype.withAnnotation(PUT.class));
-    mappings.add(prototype.withAnnotation(PutMapping.class));
+    mappings.add(prototype.withAnnotation(PUT.class).withMethod(HttpMethod.PUT));
+    mappings.add(prototype.withAnnotation(PutMapping.class).withMethod(HttpMethod.PUT));
 
-    mappings.add(prototype.withAnnotation(PATCH.class));
-    mappings.add(prototype.withAnnotation(PatchMapping.class));
+    mappings.add(prototype.withAnnotation(PATCH.class).withMethod(HttpMethod.PATCH));
+    mappings.add(prototype.withAnnotation(PatchMapping.class).withMethod(HttpMethod.PATCH));
 
-    mappings.add(prototype.withAnnotation(DELETE.class));
-    mappings.add(prototype.withAnnotation(DeleteMapping.class));
+    mappings.add(prototype.withAnnotation(DELETE.class).withMethod(HttpMethod.DELETE));
+    mappings.add(prototype.withAnnotation(DeleteMapping.class).withMethod(HttpMethod.DELETE));
     return mappings;
   }
 
