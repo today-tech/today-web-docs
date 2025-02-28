@@ -40,8 +40,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Set;
 
-import cn.taketoday.util.FileCopyUtils;
 import cn.taketoday.web.doc.DocConfig;
+import infra.util.FileCopyUtils;
 
 /**
  * @author <a href="https://github.com/TAKETODAY">Harry Yang</a>

@@ -50,14 +50,14 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
-import cn.taketoday.core.io.ClassPathResource;
-import cn.taketoday.lang.Constant;
-import cn.taketoday.util.CollectionUtils;
 import cn.taketoday.web.doc.DocConfig;
 import cn.taketoday.web.doc.gradle.extension.WebDocPluginExtension;
 import cn.taketoday.web.doc.gradle.util.ArtifactFilterUtils;
 import cn.taketoday.web.doc.gradle.util.CustomArtifact;
 import cn.taketoday.web.doc.gradle.util.SourceSetUtils;
+import infra.core.io.ClassPathResource;
+import infra.lang.Constant;
+import infra.util.CollectionUtils;
 
 /**
  * Web Docs task

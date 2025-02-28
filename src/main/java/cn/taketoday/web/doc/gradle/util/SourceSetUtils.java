@@ -23,10 +23,9 @@ import org.gradle.api.logging.Logger;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.Set;
 
-import cn.taketoday.util.CollectionUtils;
+import infra.util.CollectionUtils;
 
 /**
  * @author <a href="https://github.com/TAKETODAY">Harry Yang</a>
@@ -61,8 +60,8 @@ public abstract class SourceSetUtils {
     File src = new File(projectCodePath);
 
     return src.exists() && src.listFiles() != null
-           ? src
-           : null;
+            ? src
+            : null;
   }
 
 }

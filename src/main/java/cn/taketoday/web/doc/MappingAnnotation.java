@@ -20,17 +20,17 @@ package cn.taketoday.web.doc;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-import cn.taketoday.http.HttpMethod;
-import cn.taketoday.lang.Nullable;
+import infra.http.HttpMethod;
+import infra.lang.Nullable;
 
 /**
  * @author <a href="https://github.com/TAKETODAY">Harry Yang</a>
- * @see cn.taketoday.web.annotation.RequestMapping
- * @see cn.taketoday.web.annotation.GET
- * @see cn.taketoday.web.annotation.POST
- * @see cn.taketoday.web.annotation.PUT
- * @see cn.taketoday.web.annotation.PATCH
- * @see cn.taketoday.web.annotation.DELETE
+ * @see infra.web.annotation.RequestMapping
+ * @see infra.web.annotation.GET
+ * @see infra.web.annotation.POST
+ * @see infra.web.annotation.PUT
+ * @see infra.web.annotation.PATCH
+ * @see infra.web.annotation.DELETE
  * @since 1.0 2024/1/28 12:41
  */
 public class MappingAnnotation {

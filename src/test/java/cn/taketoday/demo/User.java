@@ -19,7 +19,7 @@ package cn.taketoday.demo;
 
 import java.util.Objects;
 
-import cn.taketoday.core.style.ToStringBuilder;
+import infra.core.style.ToStringBuilder;
 
 /**
  * User model
@@ -86,7 +86,7 @@ public class User {
 
   @Override
   public String toString() {
-    return ToStringBuilder.from(this)
+    return ToStringBuilder.forInstance(this)
             .append("id", id)
             .append("name", name)
             .append("username", username)

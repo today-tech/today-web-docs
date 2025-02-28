@@ -17,15 +17,15 @@
 
 package cn.taketoday.demo;
 
-import cn.taketoday.web.annotation.DELETE;
-import cn.taketoday.web.annotation.GET;
-import cn.taketoday.web.annotation.PATCH;
-import cn.taketoday.web.annotation.POST;
-import cn.taketoday.web.annotation.PUT;
-import cn.taketoday.web.annotation.PathVariable;
-import cn.taketoday.web.annotation.RequestBody;
-import cn.taketoday.web.annotation.RequestMapping;
-import cn.taketoday.web.annotation.RestController;
+import infra.web.annotation.DELETE;
+import infra.web.annotation.GET;
+import infra.web.annotation.PATCH;
+import infra.web.annotation.POST;
+import infra.web.annotation.PUT;
+import infra.web.annotation.PathVariable;
+import infra.web.annotation.RequestBody;
+import infra.web.annotation.RequestMapping;
+import infra.web.annotation.RestController;
 
 /**
  * User APIs

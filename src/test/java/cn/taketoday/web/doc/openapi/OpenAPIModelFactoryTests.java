@@ -24,8 +24,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-import cn.taketoday.lang.Constant;
 import cn.taketoday.web.doc.DocConfig;
+import infra.lang.Constant;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.SpecVersion;
 
